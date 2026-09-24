@@ -102,9 +102,6 @@ module.exports = [
       globals: {
         ...globals.node
       }
-    },
-    rules: {
-      'no-unused-vars': 'off'
     }
   }
 ]
