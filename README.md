@@ -15,3 +15,7 @@ Start by running `npm install` inside the project folder
 ## Deployed application
 
 [FS Pokedex](https://fs-pokedex-r25h.onrender.com)
+
+## Exercise 13
+
+Testing pull request workflow.
