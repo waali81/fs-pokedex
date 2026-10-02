@@ -36,6 +36,9 @@ jobs:
       - name: Run E2E tests
         run: npm run test:e2e
 
+      - name: Test Discord failure notification
+        run: exit 1
+
       - name: Trigger deployment
         if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
         run: curl ${{ secrets.RENDER_DEPLOY_HOOK }}
