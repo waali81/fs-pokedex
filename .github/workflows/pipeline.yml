@@ -62,6 +62,29 @@ jobs:
             **Message:** ${{ github.event.head_commit.message }}
             **Author:** ${{ github.event.head_commit.author.name }}
 
+  notify_failure:
+    if: ${{ always() && (needs.build_and_test.result == 'failure' || needs.deploy.result == 'failure' || needs.tag_release.result == 'failure') }}
+    needs: [build_and_test, deploy, tag_release]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Discord failure notification
+        uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          status: Failure
+          nocontext: true
+          noprefix: true
+          color: 0xED4245
+          title: "❌ Build Failed"
+          description: |
+            **Repository:** ${{ github.repository }}
+            **Branch:** ${{ github.head_ref || github.ref_name }}
+            **Commit:** [`${{ github.sha }}`](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }})
+            **Message:** ${{ github.event.head_commit.message || github.event.pull_request.title }}
+            **Author:** ${{ github.actor }}
+            **Workflow:** [${{ github.workflow }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            **Job:** Failed job(s): ${{ join(needs.*.result, ', ') }}
+
   tag_release:
     if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
     needs: [build_and_test]
