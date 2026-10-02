@@ -54,6 +54,9 @@ jobs:
             **Message:** ${{ github.event.head_commit.message }}
             **Author:** ${{ github.event.head_commit.author.name }}
 
+      - name: Test Discord failure notification
+        run: exit 1
+
       - name: Discord notification
         if: ${{ failure() }}
         uses: sarisia/actions-status-discord@v1
@@ -71,9 +74,6 @@ jobs:
             **Author:** ${{ github.event.pull_request.user.login }}
             **Workflow:** [${{ github.workflow }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
             **Job:** ${{ github.job }}
-      
-      - name: Test Discord failure notification
-        run: exit 1
 
   tag_release:
     if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
