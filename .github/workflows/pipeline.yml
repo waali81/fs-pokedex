@@ -36,9 +36,6 @@ jobs:
       - name: Run E2E tests
         run: npm run test:e2e
 
-      - name: Test failure notification
-        run: exit 1
-
   deploy:
     if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
     needs: [build_and_test]
