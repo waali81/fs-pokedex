@@ -36,12 +36,21 @@ jobs:
       - name: Run E2E tests
         run: npm run test:e2e
 
-      - name: Test Discord failure notification
-        run: exit 1
-
       - name: Trigger deployment
         if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
         run: curl ${{ secrets.RENDER_DEPLOY_HOOK }}
+
+      - name: Deployment notification
+        if: ${{ success() && github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
+        uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          nocontext: true
+          title: "Deployment Successful!"
+          description: |
+            Commit: ${{ github.sha }}
+            Message: ${{ github.event.head_commit.message }}
+            Author: ${{ github.event.head_commit.author.name }}
 
       - name: Discord notification
         if: ${{ failure() }}
