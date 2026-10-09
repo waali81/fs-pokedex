@@ -15,3 +15,6 @@ Start by running `npm install` inside the project folder
 ## Deployed application
 
 [FS Pokedex](https://fs-pokedex-r25h.onrender.com)
+
+CI pipeline runs linting, tests and E2E tests.
+Successful pushes to main trigger deployment to Render.
