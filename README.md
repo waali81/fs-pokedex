@@ -15,3 +15,5 @@ Start by running `npm install` inside the project folder
 ## Deployed application
 
 [FS Pokedex](https://fs-pokedex-r25h.onrender.com)
+
+Testing the #skip deployment
